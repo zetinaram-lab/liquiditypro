@@ -1,4 +1,13 @@
+// ============================================
+// Updated Price Header with Language & Tools
+// ============================================
+
 import { TrendingUp, TrendingDown, Activity } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { LanguageToggle } from '@/components/LanguageToggle';
+import { RiskCalculator } from '@/components/RiskCalculator';
+import { CorrelationBar } from '@/components/CorrelationBar';
+import type { CorrelationData } from '@/types/trading';
 
 interface PriceHeaderProps {
   currentPrice: number;
@@ -7,6 +16,7 @@ interface PriceHeaderProps {
   spread: number;
   dayHigh: number;
   dayLow: number;
+  correlations: CorrelationData[];
 }
 
 export const PriceHeader = ({
@@ -16,7 +26,9 @@ export const PriceHeader = ({
   spread,
   dayHigh,
   dayLow,
+  correlations,
 }: PriceHeaderProps) => {
+  const { t } = useLanguage();
   const isPositive = priceChange >= 0;
 
   return (
@@ -31,7 +43,7 @@ export const PriceHeader = ({
               </div>
               <div>
                 <h1 className="text-lg font-semibold text-foreground">XAU/USD</h1>
-                <span className="text-xs text-muted-foreground">Gold Spot</span>
+                <span className="text-xs text-muted-foreground">{t.header.goldSpot}</span>
               </div>
             </div>
           </div>
@@ -42,42 +54,55 @@ export const PriceHeader = ({
               ${currentPrice.toFixed(2)}
             </span>
             <div className={`flex items-center gap-1 ${isPositive ? 'text-bullish' : 'text-bearish'}`}>
-              {isPositive ? (
-                <TrendingUp className="w-4 h-4" />
-              ) : (
-                <TrendingDown className="w-4 h-4" />
-              )}
+              {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
               <span className="font-mono text-sm font-medium">
                 {isPositive ? '+' : ''}{priceChange.toFixed(2)} ({isPositive ? '+' : ''}{priceChangePercent.toFixed(2)}%)
               </span>
             </div>
           </div>
+
+          {/* Correlation Bar */}
+          <div className="hidden xl:block">
+            <CorrelationBar correlations={correlations} />
+          </div>
         </div>
 
-        {/* Market Stats */}
-        <div className="flex items-center gap-8">
-          {/* Spread */}
-          <div className="text-center">
-            <span className="indicator-label block">Spread</span>
-            <span className="font-mono text-sm text-foreground">{spread.toFixed(2)}</span>
+        {/* Market Stats & Tools */}
+        <div className="flex items-center gap-6">
+          {/* Market Stats */}
+          <div className="flex items-center gap-6">
+            {/* Spread */}
+            <div className="text-center">
+              <span className="indicator-label block">{t.header.spread}</span>
+              <span className="font-mono text-sm text-foreground">{spread.toFixed(2)}</span>
+            </div>
+
+            {/* Day High */}
+            <div className="text-center">
+              <span className="indicator-label block">{t.header.dayHigh}</span>
+              <span className="font-mono text-sm text-bullish">${dayHigh.toFixed(2)}</span>
+            </div>
+
+            {/* Day Low */}
+            <div className="text-center">
+              <span className="indicator-label block">{t.header.dayLow}</span>
+              <span className="font-mono text-sm text-bearish">${dayLow.toFixed(2)}</span>
+            </div>
           </div>
 
-          {/* Day High */}
-          <div className="text-center">
-            <span className="indicator-label block">Day High</span>
-            <span className="font-mono text-sm text-bullish">${dayHigh.toFixed(2)}</span>
-          </div>
+          {/* Divider */}
+          <div className="h-8 w-px bg-border" />
 
-          {/* Day Low */}
-          <div className="text-center">
-            <span className="indicator-label block">Day Low</span>
-            <span className="font-mono text-sm text-bearish">${dayLow.toFixed(2)}</span>
+          {/* Tools */}
+          <div className="flex items-center gap-2">
+            <RiskCalculator />
+            <LanguageToggle />
           </div>
 
           {/* Live Indicator */}
           <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-bullish/10 border border-bullish/30">
             <Activity className="w-3.5 h-3.5 text-bullish pulse-live" />
-            <span className="text-xs font-medium text-bullish">LIVE</span>
+            <span className="text-xs font-medium text-bullish">{t.header.live}</span>
           </div>
         </div>
       </div>
