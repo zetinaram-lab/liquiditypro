@@ -1,6 +1,11 @@
+// ============================================
+// Updated Candlestick Chart with i18n
+// ============================================
+
 import { useEffect, useRef } from 'react';
 import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickSeries } from 'lightweight-charts';
-import { CandleData, OrderBlock } from '@/hooks/useMarketData';
+import type { CandleData, OrderBlock } from '@/types/trading';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CandlestickChartProps {
   candles: CandleData[];
@@ -8,9 +13,10 @@ interface CandlestickChartProps {
 }
 
 export const CandlestickChart = ({ candles, orderBlocks }: CandlestickChartProps) => {
+  const { t } = useLanguage();
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
-  const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
+  const candleSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
 
   useEffect(() => {
     if (!chartContainerRef.current) return;
@@ -27,7 +33,7 @@ export const CandlestickChart = ({ candles, orderBlocks }: CandlestickChartProps
         horzLines: { color: 'hsl(217 33% 12%)' },
       },
       width: chartContainerRef.current.clientWidth,
-      height: 400,
+      height: 380,
       crosshair: {
         mode: 1,
         vertLine: {
@@ -69,7 +75,7 @@ export const CandlestickChart = ({ candles, orderBlocks }: CandlestickChartProps
     candleSeriesRef.current = candleSeries;
 
     // Format candle data for lightweight-charts
-    const formattedCandles = candles.map(c => ({
+    const formattedCandles = candles.map((c) => ({
       time: Math.floor(c.time / 1000) as any,
       open: c.open,
       high: c.high,
@@ -80,8 +86,7 @@ export const CandlestickChart = ({ candles, orderBlocks }: CandlestickChartProps
     candleSeries.setData(formattedCandles);
 
     // Add Order Block markers as price lines
-    orderBlocks.forEach(ob => {
-      // Create price lines for order block boundaries
+    orderBlocks.forEach((ob) => {
       candleSeries.createPriceLine({
         price: ob.priceHigh,
         color: ob.type === 'bullish' ? 'hsl(160 84% 39% / 0.6)' : 'hsl(350 89% 60% / 0.6)',
@@ -137,11 +142,11 @@ export const CandlestickChart = ({ candles, orderBlocks }: CandlestickChartProps
       <div className="absolute top-4 left-4 z-10 flex gap-4">
         <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-background/80 backdrop-blur-sm border border-bullish/30">
           <div className="w-3 h-3 rounded-sm bg-bullish/40 border border-bullish" />
-          <span className="text-xs font-medium text-bullish">Demand Zone</span>
+          <span className="text-xs font-medium text-bullish">{t.chart.demandZone}</span>
         </div>
         <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-background/80 backdrop-blur-sm border border-bearish/30">
           <div className="w-3 h-3 rounded-sm bg-bearish/40 border border-bearish" />
-          <span className="text-xs font-medium text-bearish">Supply Zone</span>
+          <span className="text-xs font-medium text-bearish">{t.chart.supplyZone}</span>
         </div>
       </div>
 
