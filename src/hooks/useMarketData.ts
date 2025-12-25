@@ -31,6 +31,7 @@ export type { CandleData, OrderBlock, NewsItem, RSIData, BullBearData };
 interface UseMarketDataReturn {
   data: MarketData | null;
   isLoading: boolean;
+  isChangingTimeframe: boolean;
   selectedTimeframe: Timeframe;
   changeTimeframe: (timeframe: Timeframe) => void;
   isConnected: boolean;
@@ -43,6 +44,7 @@ const UPDATE_INTERVAL = 2000; // 2 seconds for thermal efficiency
 export const useMarketData = (): UseMarketDataReturn => {
   const [data, setData] = useState<MarketData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isChangingTimeframe, setIsChangingTimeframe] = useState(false);
   const [selectedTimeframe, setSelectedTimeframe] = useState<Timeframe>('15m');
   const [isConnected, setIsConnected] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -127,19 +129,21 @@ export const useMarketData = (): UseMarketDataReturn => {
     setData(newData);
   }, []);
 
-  // Handle timeframe change
+  // Handle timeframe change - NO full page reload
   const changeTimeframe = useCallback((timeframe: Timeframe) => {
-    setIsLoading(true);
+    if (timeframe === selectedTimeframe) return;
+    
+    setIsChangingTimeframe(true);
     setSelectedTimeframe(timeframe);
     
-    // Small delay for UX
-    setTimeout(() => {
+    // Generar datos inmediatamente sin delay que causa parpadeo
+    requestAnimationFrame(() => {
       const newData = generateDataForTimeframe(timeframe);
       dataRef.current = newData;
       setData(newData);
-      setIsLoading(false);
-    }, 300);
-  }, [generateDataForTimeframe]);
+      setIsChangingTimeframe(false);
+    });
+  }, [generateDataForTimeframe, selectedTimeframe]);
 
   // Reconnect function
   const reconnect = useCallback(() => {
@@ -186,10 +190,11 @@ export const useMarketData = (): UseMarketDataReturn => {
   return useMemo(() => ({
     data,
     isLoading,
+    isChangingTimeframe,
     selectedTimeframe,
     changeTimeframe,
     isConnected,
     error,
     reconnect,
-  }), [data, isLoading, selectedTimeframe, changeTimeframe, isConnected, error, reconnect]);
+  }), [data, isLoading, isChangingTimeframe, selectedTimeframe, changeTimeframe, isConnected, error, reconnect]);
 };

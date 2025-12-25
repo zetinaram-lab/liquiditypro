@@ -1,10 +1,11 @@
 // ============================================
 // Main Trading Dashboard - Index Page
-// v1.1.0 - Optimized & Bug-Fixed
+// v1.2.0 - With mobile support & no timeframe flicker
 // ============================================
 
 import { memo, useMemo } from 'react';
 import { useMarketData } from '@/hooks/useMarketData';
+import { useIsMobile } from '@/hooks/use-mobile';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { PriceHeader } from '@/components/PriceHeader';
 import { CandlestickChart } from '@/components/CandlestickChart';
@@ -15,6 +16,7 @@ import { OrderBlockPanel } from '@/components/OrderBlockPanel';
 import { EconomicCalendar } from '@/components/EconomicCalendar';
 import { TimeframeSelector } from '@/components/TimeframeSelector';
 import { ConnectionStatus } from '@/components/ConnectionStatus';
+import { MobileDashboard } from '@/components/MobileDashboard';
 import {
   ChartSkeleton,
   IndicatorSkeleton,
@@ -26,15 +28,26 @@ import {
 // Memoized chart header
 const ChartHeader = memo(({ 
   timeframe, 
-  onTimeframeChange 
+  onTimeframeChange,
+  isChanging
 }: { 
   timeframe: string; 
   onTimeframeChange: (tf: any) => void;
+  isChanging: boolean;
 }) => (
   <div className="flex items-center justify-between mb-4">
-    <h2 className="text-sm font-semibold text-foreground">XAU/USD • {timeframe}</h2>
+    <div className="flex items-center gap-3">
+      <h2 className="text-sm font-semibold text-foreground">XAU/USD • {timeframe}</h2>
+      {isChanging && (
+        <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+      )}
+    </div>
     <div className="flex items-center gap-4">
-      <TimeframeSelector selected={timeframe as any} onChange={onTimeframeChange} />
+      <TimeframeSelector 
+        selected={timeframe as any} 
+        onChange={onTimeframeChange}
+        disabled={isChanging}
+      />
       <div className="flex items-center gap-2">
         <span className="text-xs text-muted-foreground">Smart Money Concepts</span>
         <span className="w-2 h-2 rounded-full bg-primary pulse-live" />
@@ -45,32 +58,41 @@ const ChartHeader = memo(({
 ChartHeader.displayName = 'ChartHeader';
 
 // Loading skeleton
-const LoadingSkeleton = () => (
+const LoadingSkeleton = ({ isMobile }: { isMobile: boolean }) => (
   <div className="min-h-screen bg-background grid-pattern">
     <div className="trading-card border-b border-border px-6 py-4">
       <div className="h-14 animate-pulse bg-secondary rounded" />
     </div>
-    <div className="flex h-[calc(100vh-80px)]">
-      <div className="flex-1 flex flex-col p-4 gap-4 overflow-hidden">
+    {isMobile ? (
+      <div className="p-4 space-y-4">
         <ChartSkeleton />
-        <OrderBlockSkeleton />
-        <div className="grid grid-cols-2 gap-4">
-          <IndicatorSkeleton />
-          <IndicatorSkeleton />
+        <IndicatorSkeleton />
+      </div>
+    ) : (
+      <div className="flex h-[calc(100vh-80px)]">
+        <div className="flex-1 flex flex-col p-4 gap-4 overflow-hidden">
+          <ChartSkeleton />
+          <OrderBlockSkeleton />
+          <div className="grid grid-cols-2 gap-4">
+            <IndicatorSkeleton />
+            <IndicatorSkeleton />
+          </div>
+        </div>
+        <div className="w-96 border-l border-border p-4 flex flex-col gap-4">
+          <CalendarSkeleton />
+          <NewsFeedSkeleton />
         </div>
       </div>
-      <div className="w-96 border-l border-border p-4 flex flex-col gap-4">
-        <CalendarSkeleton />
-        <NewsFeedSkeleton />
-      </div>
-    </div>
+    )}
   </div>
 );
 
 const Dashboard = () => {
+  const isMobile = useIsMobile();
   const { 
     data, 
     isLoading, 
+    isChangingTimeframe,
     selectedTimeframe, 
     changeTimeframe,
     isConnected,
@@ -85,9 +107,25 @@ const Dashboard = () => {
   }), [data?.candles, data?.orderBlocks]);
 
   if (isLoading || !data) {
-    return <LoadingSkeleton />;
+    return <LoadingSkeleton isMobile={isMobile} />;
   }
 
+  // Mobile Layout
+  if (isMobile) {
+    return (
+      <MobileDashboard
+        data={data}
+        selectedTimeframe={selectedTimeframe}
+        onTimeframeChange={changeTimeframe}
+        isConnected={isConnected}
+        error={error}
+        onReconnect={reconnect}
+        isChangingTimeframe={isChangingTimeframe}
+      />
+    );
+  }
+
+  // Desktop Layout
   return (
     <div className="min-h-screen bg-background grid-pattern">
       {/* Connection Status */}
@@ -116,12 +154,15 @@ const Dashboard = () => {
           <div className="trading-card flex-1 min-h-0 p-4 relative">
             <ChartHeader 
               timeframe={selectedTimeframe} 
-              onTimeframeChange={changeTimeframe} 
+              onTimeframeChange={changeTimeframe}
+              isChanging={isChangingTimeframe}
             />
-            <CandlestickChart 
-              candles={chartData.candles} 
-              orderBlocks={chartData.orderBlocks} 
-            />
+            <div className={`transition-opacity duration-200 ${isChangingTimeframe ? 'opacity-50' : 'opacity-100'}`}>
+              <CandlestickChart 
+                candles={chartData.candles} 
+                orderBlocks={chartData.orderBlocks} 
+              />
+            </div>
           </div>
 
           {/* Order Block Panel */}
