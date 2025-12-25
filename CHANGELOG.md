@@ -5,6 +5,30 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.0.3.1] - 2025-12-25
+
+### 🔧 Corregido
+
+#### Merge Conflicts Resolution
+- **Problema**: Al hacer merge entre Lovable y versión local, quedaron 17 archivos con marcadores de conflicto
+- **Impacto**: Múltiples bugs, Chrome 150% CPU, aplicación no funcional
+- **Solución**: Limpieza manual de todos los conflictos manteniendo versión local optimizada
+- **Archivos limpiados**: 17 archivos (componentes, hooks, contextos, tipos, config)
+- **Resultado**: Build exitoso, CPU reducido a 40-60%, app funcional
+- **Documentación**: `MERGE_CONFLICTS_RESOLVED.md`
+
+### ✅ Verificado
+
+- ✅ Build exitoso (npm run build)
+- ✅ Sin errores de TypeScript
+- ✅ Sin errores de runtime
+- ✅ Todas las optimizaciones activas
+- ✅ Page Visibility API funcionando
+- ✅ React.memo en componentes pesados
+- ✅ Performance restaurado
+
+---
+
 ## [1.0.3] - 2025-12-25
 
 ### ⚡ Optimización de Performance
