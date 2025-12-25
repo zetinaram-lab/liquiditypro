@@ -172,6 +172,12 @@ export interface Translations {
     power: string;
     noData: string;
   };
+  // RSI Indicator
+  rsi: {
+    overbought: string;
+    oversold: string;
+    neutral: string;
+  };
   // Economic Calendar
   economicCalendar: {
     title: string;
@@ -193,6 +199,12 @@ export interface Translations {
     riskAmount: string;
     pipValue: string;
     positionSizer: string;
+  };
+  // Connection Status
+  connection: {
+    disconnected: string;
+    reconnect: string;
+    connecting: string;
   };
   // Common
   common: {

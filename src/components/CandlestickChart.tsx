@@ -1,10 +1,10 @@
 // ============================================
-// Updated Candlestick Chart with i18n + Thermal Optimization
-// v1.0.3 - Added React.memo and optimized re-renders
+// Candlestick Chart - Optimized & Bug-Fixed
+// v1.1.0 - Fixed re-rendering loops and stability
 // ============================================
 
-import { useEffect, useRef, useState, memo } from 'react';
-import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickSeries } from 'lightweight-charts';
+import { useEffect, useRef, useCallback, memo } from 'react';
+import { createChart, ColorType, IChartApi, ISeriesApi, CandlestickSeries, IPriceLine } from 'lightweight-charts';
 import type { CandleData, OrderBlock } from '@/types/trading';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -13,35 +13,21 @@ interface CandlestickChartProps {
   orderBlocks: OrderBlock[];
 }
 
-// THERMAL OPTIMIZATION: Memoize chart component - only re-render when candles/orderBlocks actually change
 export const CandlestickChart = memo(({ candles, orderBlocks }: CandlestickChartProps) => {
   const { t } = useLanguage();
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const candleSeriesRef = useRef<ISeriesApi<'Candlestick'> | null>(null);
-  const [isInitialized, setIsInitialized] = useState(false);
-  const initializingRef = useRef(false);
+  const priceLinesRef = useRef<IPriceLine[]>([]);
+  const isInitializedRef = useRef(false);
 
-  // Validar datos antes de renderizar
-  if (!candles || candles.length === 0) {
-    return (
-      <div className="chart-container relative flex items-center justify-center h-[380px]">
-        <div className="flex flex-col items-center gap-2">
-          <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-          <p className="text-sm text-muted-foreground">Cargando datos del gráfico...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // THERMAL OPTIMIZATION: Initialize chart once (unchanged)
-  useEffect(() => {
-    if (!chartContainerRef.current || initializingRef.current || isInitialized) return;
+  // Initialize chart only once
+  const initializeChart = useCallback(() => {
+    if (!chartContainerRef.current || isInitializedRef.current) return;
     
-    initializingRef.current = true;
+    isInitializedRef.current = true;
 
     try {
-      // Create chart
       const chart = createChart(chartContainerRef.current, {
         layout: {
           background: { type: ColorType.Solid, color: 'transparent' },
@@ -82,7 +68,6 @@ export const CandlestickChart = memo(({ candles, orderBlocks }: CandlestickChart
 
       chartRef.current = chart;
 
-      // Add candlestick series
       const candleSeries = chart.addSeries(CandlestickSeries, {
         upColor: 'hsl(160 84% 39%)',
         downColor: 'hsl(350 89% 60%)',
@@ -93,41 +78,44 @@ export const CandlestickChart = memo(({ candles, orderBlocks }: CandlestickChart
       });
 
       candleSeriesRef.current = candleSeries;
-      setIsInitialized(true);
-
-      // Handle resize
-      const handleResize = () => {
-        if (chartContainerRef.current && chartRef.current) {
-          chartRef.current.applyOptions({ width: chartContainerRef.current.clientWidth });
-        }
-      };
-
-      window.addEventListener('resize', handleResize);
-
-      return () => {
-        window.removeEventListener('resize', handleResize);
-        if (chartRef.current) {
-          chartRef.current.remove();
-          chartRef.current = null;
-        }
-        candleSeriesRef.current = null;
-        setIsInitialized(false);
-        initializingRef.current = false;
-      };
     } catch (err) {
       console.error('Error initializing chart:', err);
-      initializingRef.current = false;
+      isInitializedRef.current = false;
     }
-  }, [isInitialized]);
+  }, []);
 
-  // Update chart data when candles change
+  // Handle resize
   useEffect(() => {
-    if (!candleSeriesRef.current || !isInitialized || !candles || candles.length === 0) {
-      return;
-    }
+    const handleResize = () => {
+      if (chartContainerRef.current && chartRef.current) {
+        chartRef.current.applyOptions({ width: chartContainerRef.current.clientWidth });
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Initialize chart on mount
+  useEffect(() => {
+    initializeChart();
+
+    return () => {
+      if (chartRef.current) {
+        chartRef.current.remove();
+        chartRef.current = null;
+        candleSeriesRef.current = null;
+        priceLinesRef.current = [];
+        isInitializedRef.current = false;
+      }
+    };
+  }, [initializeChart]);
+
+  // Update candle data
+  useEffect(() => {
+    if (!candleSeriesRef.current || !candles?.length) return;
 
     try {
-      // Format all candle data for lightweight-charts
       const formattedCandles = candles.map((c) => ({
         time: Math.floor(c.time / 1000) as any,
         open: c.open,
@@ -136,49 +124,73 @@ export const CandlestickChart = memo(({ candles, orderBlocks }: CandlestickChart
         close: c.close,
       }));
 
-      // Set all data (mejor para cambios de timeframe)
       candleSeriesRef.current.setData(formattedCandles);
 
-      // Fit content
       if (chartRef.current) {
         chartRef.current.timeScale().fitContent();
       }
     } catch (err) {
       console.error('Error updating chart data:', err);
     }
-  }, [candles, isInitialized]);
+  }, [candles]);
 
   // Update order blocks
   useEffect(() => {
-    if (!candleSeriesRef.current || !isInitialized || !orderBlocks) {
-      return;
-    }
+    if (!candleSeriesRef.current || !orderBlocks) return;
 
     try {
-      // Add Order Block markers as price lines
+      // Remove old price lines
+      priceLinesRef.current.forEach((line) => {
+        try {
+          candleSeriesRef.current?.removePriceLine(line);
+        } catch {
+          // Line might already be removed
+        }
+      });
+      priceLinesRef.current = [];
+
+      // Add new price lines for order blocks
       orderBlocks.slice(-5).forEach((ob) => {
         if (candleSeriesRef.current) {
-          candleSeriesRef.current.createPriceLine({
+          const color = ob.type === 'bullish' 
+            ? 'hsl(160 84% 39% / 0.6)' 
+            : 'hsl(350 89% 60% / 0.6)';
+
+          const highLine = candleSeriesRef.current.createPriceLine({
             price: ob.priceHigh,
-            color: ob.type === 'bullish' ? 'hsl(160 84% 39% / 0.6)' : 'hsl(350 89% 60% / 0.6)',
+            color,
             lineWidth: 1,
             lineStyle: 2,
             axisLabelVisible: false,
           });
 
-          candleSeriesRef.current.createPriceLine({
+          const lowLine = candleSeriesRef.current.createPriceLine({
             price: ob.priceLow,
-            color: ob.type === 'bullish' ? 'hsl(160 84% 39% / 0.6)' : 'hsl(350 89% 60% / 0.6)',
+            color,
             lineWidth: 1,
             lineStyle: 2,
             axisLabelVisible: false,
           });
+
+          priceLinesRef.current.push(highLine, lowLine);
         }
       });
     } catch (err) {
       console.error('Error updating order blocks:', err);
     }
-  }, [orderBlocks, isInitialized]);
+  }, [orderBlocks]);
+
+  // Show loading if no candles
+  if (!candles?.length) {
+    return (
+      <div className="chart-container relative flex items-center justify-center h-[380px]">
+        <div className="flex flex-col items-center gap-2">
+          <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm text-muted-foreground">Cargando datos...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="chart-container relative">
@@ -195,14 +207,14 @@ export const CandlestickChart = memo(({ candles, orderBlocks }: CandlestickChart
       </div>
 
       {/* Chart Container */}
-      <div ref={chartContainerRef} className="w-full" />
+      <div ref={chartContainerRef} className="w-full h-[380px]" />
 
       {/* Order Block Overlays */}
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {orderBlocks.slice(-2).map((ob, i) => (
           <div
             key={ob.id}
-            className={`absolute left-0 right-20 ${
+            className={`absolute left-0 right-20 transition-opacity duration-500 ${
               ob.type === 'bullish' ? 'order-block-bullish' : 'order-block-bearish'
             }`}
             style={{
@@ -215,7 +227,15 @@ export const CandlestickChart = memo(({ candles, orderBlocks }: CandlestickChart
       </div>
     </div>
   );
+}, (prevProps, nextProps) => {
+  // Custom comparison for better memo performance
+  const candlesEqual = prevProps.candles.length === nextProps.candles.length &&
+    prevProps.candles[prevProps.candles.length - 1]?.close === 
+    nextProps.candles[nextProps.candles.length - 1]?.close;
+  
+  const blocksEqual = prevProps.orderBlocks.length === nextProps.orderBlocks.length;
+  
+  return candlesEqual && blocksEqual;
 });
 
-// Display name for debugging
 CandlestickChart.displayName = 'CandlestickChart';

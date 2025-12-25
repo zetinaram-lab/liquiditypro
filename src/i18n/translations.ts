@@ -55,6 +55,11 @@ export const translations: Record<Language, Translations> = {
       power: 'Power',
       noData: 'No data available',
     },
+    rsi: {
+      overbought: 'Overbought',
+      oversold: 'Oversold',
+      neutral: 'Neutral',
+    },
     economicCalendar: {
       title: 'Economic Calendar',
       highImpact: 'High Impact',
@@ -74,6 +79,11 @@ export const translations: Record<Language, Translations> = {
       riskAmount: 'Risk Amount',
       pipValue: 'Pip Value',
       positionSizer: 'Position Sizer',
+    },
+    connection: {
+      disconnected: 'Disconnected',
+      reconnect: 'Reconnect',
+      connecting: 'Connecting...',
     },
     common: {
       loading: 'Loading market data...',
@@ -131,6 +141,11 @@ export const translations: Record<Language, Translations> = {
       power: 'Poder',
       noData: 'No hay datos disponibles',
     },
+    rsi: {
+      overbought: 'Sobrecompra',
+      oversold: 'Sobreventa',
+      neutral: 'Neutral',
+    },
     economicCalendar: {
       title: 'Calendario Económico',
       highImpact: 'Alto Impacto',
@@ -150,6 +165,11 @@ export const translations: Record<Language, Translations> = {
       riskAmount: 'Monto en Riesgo',
       pipValue: 'Valor del Pip',
       positionSizer: 'Calc. Posición',
+    },
+    connection: {
+      disconnected: 'Desconectado',
+      reconnect: 'Reconectar',
+      connecting: 'Conectando...',
     },
     common: {
       loading: 'Cargando datos del mercado...',
