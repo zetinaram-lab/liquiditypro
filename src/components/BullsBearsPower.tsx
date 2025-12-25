@@ -137,7 +137,7 @@ export const BullsBearsPower = memo(({ data }: BullsBearsPowerProps) => {
             
             <Tooltip content={<CustomTooltip />} cursor={{ fill: 'hsl(217 33% 18% / 0.2)' }} />
             
-            <Bar dataKey="power" radius={[2, 2, 0, 0]} maxBarSize={8}>
+            <Bar dataKey="power" radius={[2, 2, 0, 0]} maxBarSize={8} isAnimationActive={false}>
               {chartData.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}

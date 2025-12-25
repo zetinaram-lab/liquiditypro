@@ -1,19 +1,26 @@
-import { useMemo } from 'react';
+// ============================================
+// RSI Indicator - Optimized with memo
+// ============================================
+
+import { useMemo, memo } from 'react';
 import { AreaChart, Area, XAxis, YAxis, ReferenceLine, ResponsiveContainer, Tooltip } from 'recharts';
-import { RSIData } from '@/hooks/useMarketData';
+import type { RSIData } from '@/types/trading';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface RSIIndicatorProps {
   data: RSIData[];
 }
 
-export const RSIIndicator = ({ data }: RSIIndicatorProps) => {
+export const RSIIndicator = memo(({ data }: RSIIndicatorProps) => {
+  const { t } = useLanguage();
+  
   const currentRSI = data[data.length - 1]?.value || 50;
   
   const rsiStatus = useMemo(() => {
-    if (currentRSI >= 70) return { label: 'Overbought', color: 'text-bearish' };
-    if (currentRSI <= 30) return { label: 'Oversold', color: 'text-bullish' };
-    return { label: 'Neutral', color: 'text-muted-foreground' };
-  }, [currentRSI]);
+    if (currentRSI >= 70) return { label: t.rsi?.overbought || 'Overbought', color: 'text-bearish' };
+    if (currentRSI <= 30) return { label: t.rsi?.oversold || 'Oversold', color: 'text-bullish' };
+    return { label: t.rsi?.neutral || 'Neutral', color: 'text-muted-foreground' };
+  }, [currentRSI, t]);
 
   const chartData = useMemo(() => 
     data.slice(-50).map((d, i) => ({
@@ -24,6 +31,17 @@ export const RSIIndicator = ({ data }: RSIIndicatorProps) => {
 
   const gradientColor = currentRSI >= 50 ? 'hsl(160, 84%, 39%)' : 'hsl(350, 89%, 60%)';
 
+  if (!data?.length) {
+    return (
+      <div className="trading-card p-4">
+        <span className="indicator-label">RSI (14)</span>
+        <div className="h-24 flex items-center justify-center">
+          <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="trading-card p-4">
       <div className="flex items-center justify-between mb-3">
@@ -33,10 +51,10 @@ export const RSIIndicator = ({ data }: RSIIndicatorProps) => {
             {currentRSI.toFixed(1)}
           </span>
         </div>
-        <span className={`text-xs font-medium px-2 py-1 rounded ${
-          rsiStatus.label === 'Overbought' 
+        <span className={`text-xs font-medium px-2 py-1 rounded transition-colors ${
+          rsiStatus.label === (t.rsi?.overbought || 'Overbought')
             ? 'bg-bearish/10 text-bearish' 
-            : rsiStatus.label === 'Oversold'
+            : rsiStatus.label === (t.rsi?.oversold || 'Oversold')
             ? 'bg-bullish/10 text-bullish'
             : 'bg-muted text-muted-foreground'
         }`}>
@@ -84,10 +102,18 @@ export const RSIIndicator = ({ data }: RSIIndicatorProps) => {
               stroke={gradientColor}
               strokeWidth={2}
               fill="url(#rsiGradient)"
+              isAnimationActive={false}
             />
           </AreaChart>
         </ResponsiveContainer>
       </div>
     </div>
   );
-};
+}, (prevProps, nextProps) => {
+  // Custom comparison - only re-render if last value changed significantly
+  const prevLast = prevProps.data[prevProps.data.length - 1]?.value || 0;
+  const nextLast = nextProps.data[nextProps.data.length - 1]?.value || 0;
+  return Math.abs(prevLast - nextLast) < 0.5;
+});
+
+RSIIndicator.displayName = 'RSIIndicator';
