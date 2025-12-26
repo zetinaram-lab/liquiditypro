@@ -33,13 +33,13 @@ export const PriceHeader = ({
 
   return (
     <header className="trading-card border-b border-border px-6 py-4">
-      {/* Demo Data Disclaimer */}
-      <div className="mb-3 px-4 py-2 bg-amber-500/10 border border-amber-500/30 rounded-lg flex items-center gap-2">
-        <svg className="w-4 h-4 text-amber-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      {/* Demo Data Disclaimer - Updated */}
+      <div className="mb-3 px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg flex items-center gap-2">
+        <svg className="w-4 h-4 text-cyan-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <p className="text-xs text-amber-200">
-          <strong className="font-semibold">Demo Mode:</strong> Simulated data for demonstration purposes. Not real market prices. For real trading, use certified platforms.
+        <p className="text-xs text-cyan-100">
+          <strong className="font-semibold">Simulated Data:</strong> Prices based on real market (XAU/USD: ~$4,520 as of Dec 2025). Data refreshes are simulated for demo purposes.
         </p>
       </div>
       
