@@ -14,4 +14,19 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    // Security: Remove console statements in production
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        // Remove console.* statements in production build
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+  },
+  esbuild: {
+    // Remove console.log in production during build
+    drop: mode === 'production' ? ['console', 'debugger'] : [],
+  },
 }));

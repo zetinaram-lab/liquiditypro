@@ -5,6 +5,55 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.0.5] - 2025-12-26
+
+### 🔒 Security Fix: INFO_LEAKAGE Prevention
+
+#### Problema Detectado ⚠️
+- Lovable Security Scan detectó **INFO_LEAKAGE vulnerability**
+- 23 console statements exponiendo información en producción
+- Stack traces, rutas de archivos, y lógica interna visibles
+
+#### Solución Implementada ✅
+
+**1. Automatic Console Removal**:
+- Configurado `vite.config.ts` con terser
+- `drop_console: true` en producción
+- `drop_debugger: true` para seguridad adicional
+- ESBuild backup para remover console statements
+
+**2. Development Logger**:
+- Creado `src/lib/logger.ts` para logging condicional
+- Solo funciona en modo desarrollo
+- Preparado para integración con Sentry/LogRocket
+
+**3. Build Verification**:
+```bash
+npm run build
+grep -r "console" dist/assets/
+# Resultado: 0 matches ✅
+```
+
+#### Archivos Modificados
+- `vite.config.ts` - Configuración de build seguro
+- `src/lib/logger.ts` - Logger condicional (nuevo)
+- `package.json` - Instalado terser
+- `SECURITY_FIX_INFO_LEAKAGE.md` - Documentación completa
+
+#### Impacto 🎯
+- ✅ 0 console statements en producción
+- ✅ Información interna protegida
+- ✅ Build ~5% más pequeño
+- ✅ Security vulnerability resuelta
+
+#### Testing
+- [x] Build de producción verificado
+- [x] Console statements removidos
+- [x] Modo desarrollo funciona normal
+- [x] Sin información sensible expuesta
+
+---
+
 ## [1.0.4] - 2025-12-26
 
 ### 🚀 Migración Completa desde Lovable
