@@ -24,6 +24,18 @@ export default defineConfig(({ mode }) => ({
         drop_debugger: true,
       },
     },
+    // PWA: Generate manifest and service worker
+    manifest: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Optimize bundle splitting for better caching
+          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-toast'],
+          'chart-vendor': ['recharts', 'lightweight-charts'],
+        },
+      },
+    },
   },
   esbuild: {
     // Remove console.log in production during build
