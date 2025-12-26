@@ -23,13 +23,19 @@ export const TIMEFRAME_INTERVALS: Record<Timeframe, number> = {
   '1D': 24 * 60 * 60 * 1000,
 };
 
-// Generate realistic gold price candle data around $2,650
+// Generate realistic gold price candle data around current market price
+// Note: XAU/USD = Gold price per troy ounce in US Dollars
+// Current market range (Dec 2025): $2,600 - $2,660 USD per oz
 export const generateCandleData = (
   count: number = 100,
   timeframe: Timeframe = '15m'
 ): CandleData[] => {
   const candles: CandleData[] = [];
-  let basePrice = 2645;
+  
+  // Updated to reflect real December 2025 gold prices
+  // XAU/USD typically trades between $2,600-$2,660
+  let basePrice = 2630; // Current realistic price
+  
   const now = Date.now();
   const interval = TIMEFRAME_INTERVALS[timeframe];
 
