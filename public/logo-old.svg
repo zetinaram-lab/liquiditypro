@@ -1,0 +1,98 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Radial gradient background -->
+  <rect width="512" height="512" fill="url(#bgGradient)"/>
+  
+  <!-- Gold gradient definitions -->
+  <defs>
+    <linearGradient id="darkGradient" x1="0" y1="0" x2="512" y2="512">
+      <stop offset="0%" style="stop-color:#0a0e1a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1a1f2e;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="goldGradient" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#ffed4e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d4af37;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="goldDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8941a;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="bullishGradient" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#34d399;stop-opacity:1" />
+    </linearGradient>
+    
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Gold bar/ingot base (3D effect) -->
+  <g transform="translate(256, 380)">
+    <!-- Shadow -->
+    <ellipse cx="0" cy="35" rx="140" ry="15" fill="#000000" opacity="0.3"/>
+    
+    <!-- Top face of gold bar -->
+    <path d="M -100 -20 L 100 -20 L 90 -10 L -90 -10 Z" fill="url(#goldGradient)"/>
+    
+    <!-- Right face of gold bar -->
+    <path d="M 100 -20 L 100 20 L 90 30 L 90 -10 Z" fill="url(#goldDark)"/>
+    
+    <!-- Front face of gold bar -->
+    <path d="M -90 -10 L 90 -10 L 90 30 L -90 30 Z" fill="#ffd700"/>
+    
+    <!-- Shine effect on bar -->
+    <rect x="-60" y="0" width="30" height="25" fill="white" opacity="0.2" rx="2"/>
+    
+    <!-- "XAU" text on bar -->
+    <text x="0" y="15" font-family="'JetBrains Mono', monospace" font-size="28" font-weight="bold" fill="#0a0e1a" text-anchor="middle">XAU</text>
+  </g>
+  
+  <!-- Candlestick chart (3 candles) -->
+  <g transform="translate(100, 200)">
+    <!-- Candle 1 - Bearish (Red) -->
+    <line x1="0" y1="20" x2="0" y2="100" stroke="#ef4444" stroke-width="3" opacity="0.6"/>
+    <rect x="-18" y="40" width="36" height="50" fill="#dc2626" stroke="#b91c1c" stroke-width="2" rx="2"/>
+    <rect x="-16" y="42" width="10" height="46" fill="#ef4444" opacity="0.3"/>
+    
+    <!-- Candle 2 - Bullish (Green) - Taller -->
+    <line x1="100" y1="10" x2="100" y2="110" stroke="url(#bullishGradient)" stroke-width="3" filter="url(#glow)"/>
+    <rect x="82" y="30" width="36" height="70" fill="url(#bullishGradient)" stroke="#059669" stroke-width="2" rx="2" filter="url(#glow)"/>
+    <rect x="84" y="32" width="10" height="66" fill="#34d399" opacity="0.4"/>
+    
+    <!-- Candle 3 - Bullish (Green) -->
+    <line x1="200" y1="40" x2="200" y2="120" stroke="#10b981" stroke-width="3" opacity="0.6"/>
+    <rect x="182" y="60" width="36" height="50" fill="#10b981" stroke="#059669" stroke-width="2" rx="2"/>
+    <rect x="184" y="62" width="10" height="46" fill="#34d399" opacity="0.3"/>
+  </g>
+  
+  <!-- Trend arrow (upward) -->
+  <g transform="translate(380, 160)" opacity="0.5">
+    <path d="M 0 50 L 0 -20" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
+    <path d="M -15 -5 L 0 -20 L 15 -5" fill="#10b981"/>
+  </g>
+  
+  <!-- Small accent circles (like market indicators) -->
+  <circle cx="430" cy="280" r="8" fill="#10b981" opacity="0.6"/>
+  <circle cx="450" cy="300" r="6" fill="#ffd700" opacity="0.6"/>
+  <circle cx="410" cy="310" r="5" fill="#3b82f6" opacity="0.6"/>
+  
+  <!-- Subtle grid lines -->
+  <g opacity="0.1" stroke="#ffffff" stroke-width="1">
+    <line x1="80" y1="150" x2="430" y2="150"/>
+    <line x1="80" y1="200" x2="430" y2="200"/>
+    <line x1="80" y1="250" x2="430" y2="250"/>
+    <line x1="80" y1="300" x2="430" y2="300"/>
+  </g>
+  
+  <!-- Glowing effect on top -->
+  <circle cx="256" cy="100" r="80" fill="#ffd700" opacity="0.05"/>
+  <circle cx="256" cy="100" r="50" fill="#ffd700" opacity="0.08"/>
+</svg>

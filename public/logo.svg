@@ -1,98 +1,219 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background circle with dark gradient -->
-  <circle cx="256" cy="256" r="256" fill="url(#darkGradient)"/>
-  
-  <!-- Gold gradient definitions -->
+  <!-- Definitions -->
   <defs>
-    <linearGradient id="darkGradient" x1="0" y1="0" x2="512" y2="512">
-      <stop offset="0%" style="stop-color:#0a0e1a;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1a1f2e;stop-opacity:1" />
+    <!-- Radial gradient background -->
+    <radialGradient id="bgGradient" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#1a1f2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0a0e1a;stop-opacity:1" />
+    </radialGradient>
+    
+    <!-- Premium gold gradient -->
+    <linearGradient id="goldPremium" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+      <stop offset="25%" style="stop-color:#FFF4C4;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFE55C;stop-opacity:1" />
+      <stop offset="75%" style="stop-color:#D4AF37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#B8941A;stop-opacity:1" />
     </linearGradient>
     
-    <linearGradient id="goldGradient" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" style="stop-color:#ffd700;stop-opacity:1" />
-      <stop offset="50%" style="stop-color:#ffed4e;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#d4af37;stop-opacity:1" />
+    <!-- Liquid gold gradient -->
+    <linearGradient id="liquidGold" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFE55C;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FFD700;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:1" />
     </linearGradient>
     
-    <linearGradient id="goldDark" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#b8941a;stop-opacity:1" />
+    <!-- Cyan accent -->
+    <linearGradient id="cyanGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0891b2;stop-opacity:1" />
     </linearGradient>
     
-    <linearGradient id="bullishGradient" x1="0" y1="1" x2="0" y2="0">
-      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.8" />
-      <stop offset="100%" style="stop-color:#34d399;stop-opacity:1" />
+    <!-- Purple accent -->
+    <linearGradient id="purpleGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a855f7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
     </linearGradient>
     
+    <!-- Glow filters -->
     <filter id="glow">
-      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
       <feMerge>
         <feMergeNode in="coloredBlur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
+    
+    <filter id="strongGlow">
+      <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="innerShadow">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="0" dy="2" result="offsetblur"/>
+      <feFlood flood-color="#000000" flood-opacity="0.5"/>
+      <feComposite in2="offsetblur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
   </defs>
   
-  <!-- Gold bar/ingot base (3D effect) -->
-  <g transform="translate(256, 380)">
-    <!-- Shadow -->
-    <ellipse cx="0" cy="35" rx="140" ry="15" fill="#000000" opacity="0.3"/>
+  <!-- Background -->
+  <rect width="512" height="512" fill="url(#bgGradient)"/>
+  
+  <!-- Outer glow circle -->
+  <circle cx="256" cy="256" r="200" fill="url(#goldPremium)" opacity="0.03" filter="url(#strongGlow)"/>
+  <circle cx="256" cy="256" r="150" fill="url(#goldPremium)" opacity="0.05" filter="url(#glow)"/>
+  
+  <!-- Main geometric frame -->
+  <g transform="translate(256, 256)">
+    <!-- Hexagonal frame with gold -->
+    <path d="M 0,-140 L 121,-70 L 121,70 L 0,140 L -121,70 L -121,-70 Z" 
+          stroke="url(#goldPremium)" 
+          stroke-width="2" 
+          fill="none" 
+          opacity="0.4"
+          filter="url(#glow)"/>
     
-    <!-- Top face of gold bar -->
-    <path d="M -100 -20 L 100 -20 L 90 -10 L -90 -10 Z" fill="url(#goldGradient)"/>
+    <!-- Inner hexagon -->
+    <path d="M 0,-110 L 95,-55 L 95,55 L 0,110 L -95,55 L -95,-55 Z" 
+          stroke="url(#goldPremium)" 
+          stroke-width="1.5" 
+          fill="none" 
+          opacity="0.3"/>
     
-    <!-- Right face of gold bar -->
-    <path d="M 100 -20 L 100 20 L 90 30 L 90 -10 Z" fill="url(#goldDark)"/>
-    
-    <!-- Front face of gold bar -->
-    <path d="M -90 -10 L 90 -10 L 90 30 L -90 30 Z" fill="#ffd700"/>
-    
-    <!-- Shine effect on bar -->
-    <rect x="-60" y="0" width="30" height="25" fill="white" opacity="0.2" rx="2"/>
-    
-    <!-- "XAU" text on bar -->
-    <text x="0" y="15" font-family="'JetBrains Mono', monospace" font-size="28" font-weight="bold" fill="#0a0e1a" text-anchor="middle">XAU</text>
+    <!-- Corner accent dots -->
+    <circle cx="0" cy="-140" r="4" fill="url(#cyanGlow)" filter="url(#glow)"/>
+    <circle cx="121" cy="-70" r="4" fill="url(#goldPremium)" filter="url(#glow)"/>
+    <circle cx="121" cy="70" r="4" fill="url(#purpleGlow)" filter="url(#glow)"/>
+    <circle cx="0" cy="140" r="4" fill="url(#goldPremium)" filter="url(#glow)"/>
+    <circle cx="-121" cy="70" r="4" fill="url(#cyanGlow)" filter="url(#glow)"/>
+    <circle cx="-121" cy="-70" r="4" fill="url(#purpleGlow)" filter="url(#glow)"/>
   </g>
   
-  <!-- Candlestick chart (3 candles) -->
-  <g transform="translate(100, 200)">
-    <!-- Candle 1 - Bearish (Red) -->
-    <line x1="0" y1="20" x2="0" y2="100" stroke="#ef4444" stroke-width="3" opacity="0.6"/>
-    <rect x="-18" y="40" width="36" height="50" fill="#dc2626" stroke="#b91c1c" stroke-width="2" rx="2"/>
-    <rect x="-16" y="42" width="10" height="46" fill="#ef4444" opacity="0.3"/>
+  <!-- Central emblem - Stylized "L" with liquidity wave -->
+  <g transform="translate(256, 200)">
+    <!-- Main "L" letter stylized -->
+    <path d="M -50,-80 L -50,60 L 40,60 L 40,40 L -30,40 L -30,-80 Z" 
+          fill="url(#liquidGold)" 
+          filter="url(#glow)"/>
     
-    <!-- Candle 2 - Bullish (Green) - Taller -->
-    <line x1="100" y1="10" x2="100" y2="110" stroke="url(#bullishGradient)" stroke-width="3" filter="url(#glow)"/>
-    <rect x="82" y="30" width="36" height="70" fill="url(#bullishGradient)" stroke="#059669" stroke-width="2" rx="2" filter="url(#glow)"/>
-    <rect x="84" y="32" width="10" height="66" fill="#34d399" opacity="0.4"/>
+    <!-- Liquid wave overlay -->
+    <path d="M -30,30 Q -10,20 10,30 Q 30,40 50,30 L 50,40 Q 30,50 10,40 Q -10,30 -30,40 Z" 
+          fill="url(#cyanGlow)" 
+          opacity="0.6"
+          filter="url(#glow)"/>
     
-    <!-- Candle 3 - Bullish (Green) -->
-    <line x1="200" y1="40" x2="200" y2="120" stroke="#10b981" stroke-width="3" opacity="0.6"/>
-    <rect x="182" y="60" width="36" height="50" fill="#10b981" stroke="#059669" stroke-width="2" rx="2"/>
-    <rect x="184" y="62" width="10" height="46" fill="#34d399" opacity="0.3"/>
+    <!-- Top accent line -->
+    <path d="M -50,-80 L -30,-80 L -30,-70 L -40,-70 Z" 
+          fill="#FFE55C" 
+          opacity="0.8"/>
+    
+    <!-- Inner shine -->
+    <rect x="-45" y="-75" width="10" height="30" fill="#FFF4C4" opacity="0.3" rx="2"/>
+    <rect x="-28" y="42" width="8" height="15" fill="#FFF4C4" opacity="0.3" rx="1"/>
   </g>
   
-  <!-- Trend arrow (upward) -->
-  <g transform="translate(380, 160)" opacity="0.5">
-    <path d="M 0 50 L 0 -20" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
-    <path d="M -15 -5 L 0 -20 L 15 -5" fill="#10b981"/>
+  <!-- Professional candlestick pattern (subtle, integrated) -->
+  <g transform="translate(256, 330)" opacity="0.9">
+    <!-- Micro candlesticks -->
+    <g transform="translate(-80, 0)">
+      <line x1="0" y1="-15" x2="0" y2="15" stroke="#10b981" stroke-width="1.5" opacity="0.6"/>
+      <rect x="-6" y="-8" width="12" height="12" fill="#10b981" opacity="0.7" rx="1"/>
+    </g>
+    
+    <g transform="translate(-40, 0)">
+      <line x1="0" y1="-20" x2="0" y2="20" stroke="#10b981" stroke-width="1.5" opacity="0.6"/>
+      <rect x="-6" y="-12" width="12" height="18" fill="#10b981" opacity="0.8" rx="1" filter="url(#glow)"/>
+      <rect x="-5" y="-11" width="4" height="16" fill="#34d399" opacity="0.4"/>
+    </g>
+    
+    <g transform="translate(0, 0)">
+      <line x1="0" y1="-25" x2="0" y2="25" stroke="url(#goldPremium)" stroke-width="2" opacity="0.8"/>
+      <rect x="-8" y="-15" width="16" height="22" fill="url(#liquidGold)" opacity="0.9" rx="1" filter="url(#glow)"/>
+      <rect x="-6" y="-13" width="5" height="18" fill="#FFF4C4" opacity="0.3"/>
+    </g>
+    
+    <g transform="translate(40, 0)">
+      <line x1="0" y1="-18" x2="0" y2="18" stroke="#10b981" stroke-width="1.5" opacity="0.6"/>
+      <rect x="-6" y="-10" width="12" height="15" fill="#10b981" opacity="0.8" rx="1"/>
+    </g>
+    
+    <g transform="translate(80, 0)">
+      <line x1="0" y1="-12" x2="0" y2="12" stroke="#ef4444" stroke-width="1.5" opacity="0.6"/>
+      <rect x="-6" y="-6" width="12" height="10" fill="#ef4444" opacity="0.7" rx="1"/>
+    </g>
   </g>
   
-  <!-- Small accent circles (like market indicators) -->
-  <circle cx="430" cy="280" r="8" fill="#10b981" opacity="0.6"/>
-  <circle cx="450" cy="300" r="6" fill="#ffd700" opacity="0.6"/>
-  <circle cx="410" cy="310" r="5" fill="#3b82f6" opacity="0.6"/>
-  
-  <!-- Subtle grid lines -->
-  <g opacity="0.1" stroke="#ffffff" stroke-width="1">
-    <line x1="80" y1="150" x2="430" y2="150"/>
-    <line x1="80" y1="200" x2="430" y2="200"/>
-    <line x1="80" y1="250" x2="430" y2="250"/>
-    <line x1="80" y1="300" x2="430" y2="300"/>
+  <!-- "PRO" badge -->
+  <g transform="translate(370, 150)">
+    <!-- Badge background -->
+    <rect x="-25" y="-12" width="50" height="24" rx="12" fill="url(#goldPremium)" opacity="0.2" stroke="url(#goldPremium)" stroke-width="1"/>
+    
+    <!-- PRO text -->
+    <text x="0" y="4" 
+          font-family="'JetBrains Mono', monospace" 
+          font-size="14" 
+          font-weight="bold" 
+          fill="url(#goldPremium)" 
+          text-anchor="middle"
+          filter="url(#glow)">PRO</text>
   </g>
   
-  <!-- Glowing effect on top -->
-  <circle cx="256" cy="100" r="80" fill="#ffd700" opacity="0.05"/>
-  <circle cx="256" cy="100" r="50" fill="#ffd700" opacity="0.08"/>
+  <!-- Bottom text: LIQUIDITY -->
+  <text x="256" y="420" 
+        font-family="'JetBrains Mono', monospace" 
+        font-size="24" 
+        font-weight="600" 
+        letter-spacing="8"
+        fill="url(#goldPremium)" 
+        text-anchor="middle"
+        opacity="0.9"
+        filter="url(#glow)">LIQUIDITY</text>
+  
+  <!-- Subtitle: XAU/USD -->
+  <text x="256" y="445" 
+        font-family="'JetBrains Mono', monospace" 
+        font-size="12" 
+        font-weight="400" 
+        letter-spacing="4"
+        fill="#06b6d4" 
+        text-anchor="middle"
+        opacity="0.6">XAU/USD TERMINAL</text>
+  
+  <!-- Decorative elements -->
+  <!-- Top left accent -->
+  <g transform="translate(80, 80)" opacity="0.4">
+    <circle cx="0" cy="0" r="3" fill="url(#cyanGlow)"/>
+    <circle cx="20" cy="10" r="2" fill="url(#purpleGlow)"/>
+    <circle cx="10" cy="25" r="2" fill="url(#goldPremium)"/>
+  </g>
+  
+  <!-- Top right accent -->
+  <g transform="translate(430, 80)" opacity="0.4">
+    <circle cx="0" cy="0" r="2" fill="url(#goldPremium)"/>
+    <circle cx="-20" cy="10" r="3" fill="url(#cyanGlow)"/>
+    <circle cx="-10" cy="25" r="2" fill="url(#purpleGlow)"/>
+  </g>
+  
+  <!-- Bottom particles -->
+  <g opacity="0.3">
+    <circle cx="100" cy="470" r="2" fill="url(#goldPremium)" filter="url(#glow)"/>
+    <circle cx="140" cy="480" r="1.5" fill="url(#cyanGlow)"/>
+    <circle cx="370" cy="475" r="2" fill="url(#purpleGlow)" filter="url(#glow)"/>
+    <circle cx="410" cy="485" r="1.5" fill="url(#goldPremium)"/>
+  </g>
+  
+  <!-- Scanning lines effect (subtle) -->
+  <g opacity="0.1">
+    <line x1="60" y1="256" x2="452" y2="256" stroke="url(#cyanGlow)" stroke-width="1"/>
+    <line x1="80" y1="276" x2="432" y2="276" stroke="url(#goldPremium)" stroke-width="0.5"/>
+    <line x1="80" y1="236" x2="432" y2="236" stroke="url(#goldPremium)" stroke-width="0.5"/>
+  </g>
 </svg>

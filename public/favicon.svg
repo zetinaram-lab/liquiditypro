@@ -1,23 +1,60 @@
 <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Dark background -->
+  <defs>
+    <!-- Gold gradient -->
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700"/>
+      <stop offset="50%" style="stop-color:#FFF4C4"/>
+      <stop offset="100%" style="stop-color:#D4AF37"/>
+    </linearGradient>
+    
+    <!-- Cyan -->
+    <linearGradient id="cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4"/>
+      <stop offset="100%" style="stop-color:#0891b2"/>
+    </linearGradient>
+    
+    <!-- Glow -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
   <rect width="32" height="32" rx="6" fill="#0a0e1a"/>
   
-  <!-- Candlesticks (simplified) -->
-  <!-- Candle 1 - Red -->
-  <rect x="6" y="12" width="4" height="8" fill="#ef4444" rx="0.5"/>
-  <line x1="8" y1="10" x2="8" y2="21" stroke="#ef4444" stroke-width="1"/>
+  <!-- Subtle hexagon frame -->
+  <path d="M 16,6 L 24,11 L 24,21 L 16,26 L 8,21 L 8,11 Z" 
+        stroke="url(#gold)" 
+        stroke-width="0.5" 
+        fill="none" 
+        opacity="0.3"/>
   
-  <!-- Candle 2 - Green (taller) -->
-  <rect x="14" y="8" width="4" height="12" fill="#10b981" rx="0.5"/>
-  <line x1="16" y1="6" x2="16" y2="22" stroke="#10b981" stroke-width="1"/>
+  <!-- Stylized "L" -->
+  <g transform="translate(16, 12)">
+    <path d="M -4,-6 L -4,6 L 3,6 L 3,4 L -2,4 L -2,-6 Z" 
+          fill="url(#gold)" 
+          filter="url(#glow)"/>
+    
+    <!-- Liquid wave -->
+    <path d="M -2,3 Q -1,2 0,3 Q 1,4 2,3 L 2,4 Q 1,5 0,4 Q -1,3 -2,4 Z" 
+          fill="url(#cyan)" 
+          opacity="0.6"/>
+  </g>
   
-  <!-- Candle 3 - Green -->
-  <rect x="22" y="11" width="4" height="9" fill="#10b981" rx="0.5"/>
-  <line x1="24" y1="9" x2="24" y2="22" stroke="#10b981" stroke-width="1"/>
+  <!-- Micro candlesticks -->
+  <g transform="translate(16, 24)" opacity="0.8">
+    <rect x="-6" y="-2" width="2" height="3" fill="#10b981" rx="0.3"/>
+    <rect x="-3" y="-3" width="2" height="4" fill="url(#gold)" rx="0.3" filter="url(#glow)"/>
+    <rect x="0" y="-2" width="2" height="3" fill="#10b981" rx="0.3"/>
+    <rect x="3" y="-1" width="2" height="2" fill="#ef4444" rx="0.3"/>
+  </g>
   
-  <!-- Gold accent line -->
-  <line x1="4" y1="25" x2="28" y2="25" stroke="#ffd700" stroke-width="2" stroke-linecap="round"/>
-  
-  <!-- Small gold dot -->
-  <circle cx="16" cy="28" r="1.5" fill="#ffd700"/>
+  <!-- Accent dots -->
+  <circle cx="8" cy="8" r="0.8" fill="url(#cyan)" opacity="0.6"/>
+  <circle cx="24" cy="8" r="0.8" fill="url(#gold)" opacity="0.6"/>
+  <circle cx="16" cy="28" r="0.8" fill="url(#gold)" opacity="0.5" filter="url(#glow)"/>
 </svg>
