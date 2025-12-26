@@ -33,13 +33,13 @@ export const PriceHeader = ({
 
   return (
     <header className="trading-card border-b border-border px-6 py-4">
-      {/* Demo Data Disclaimer - Updated */}
-      <div className="mb-3 px-4 py-2 bg-cyan-500/10 border border-cyan-500/30 rounded-lg flex items-center gap-2">
-        <svg className="w-4 h-4 text-cyan-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      {/* Real Data Indicator - Updated for v1.3.0 */}
+      <div className="mb-3 px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-lg flex items-center gap-2">
+        <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <p className="text-xs text-cyan-100">
-          <strong className="font-semibold">Simulated Data:</strong> Prices based on real market (XAU/USD: ~$4,520 as of Dec 2025). Data refreshes are simulated for demo purposes.
+        <p className="text-xs text-green-100">
+          <strong className="font-semibold">Live Market Data:</strong> Real-time gold prices from Finnhub API (XAU/USD). Updates every 5 seconds. Free tier: 60 req/min.
         </p>
       </div>
       

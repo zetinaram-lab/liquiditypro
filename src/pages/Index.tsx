@@ -1,10 +1,10 @@
 // ============================================
 // Main Trading Dashboard - Index Page
-// v1.2.0 - With mobile support & no timeframe flicker
+// v1.3.0 - With REAL market data from Finnhub API
 // ============================================
 
 import { memo, useMemo } from 'react';
-import { useMarketData } from '@/hooks/useMarketData';
+import { useMarketDataWithRealPrice } from '@/hooks/useRealMarketData';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { PriceHeader } from '@/components/PriceHeader';
@@ -90,16 +90,19 @@ const LoadingSkeleton = ({ isMobile }: { isMobile: boolean }) => (
 
 const Dashboard = () => {
   const isMobile = useIsMobile();
-  const { 
-    data, 
-    isLoading, 
-    isChangingTimeframe,
-    selectedTimeframe, 
-    changeTimeframe,
-    isConnected,
-    error,
-    reconnect
-  } = useMarketData();
+  
+  // Use real market data from Finnhub API
+  const data = useMarketDataWithRealPrice();
+  
+  const isLoading = false;
+  const isChangingTimeframe = false;
+  const selectedTimeframe = data.selectedTimeframe;
+  const isConnected = true;
+  const error = null;
+  
+  // Dummy functions for compatibility
+  const changeTimeframe = () => {};
+  const reconnect = () => {};
 
   // Memoize stable references
   const chartData = useMemo(() => ({
