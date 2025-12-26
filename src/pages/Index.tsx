@@ -17,6 +17,7 @@ import { EconomicCalendar } from '@/components/EconomicCalendar';
 import { TimeframeSelector } from '@/components/TimeframeSelector';
 import { ConnectionStatus } from '@/components/ConnectionStatus';
 import { MobileDashboard } from '@/components/MobileDashboard';
+import { Footer } from '@/components/Footer';
 import {
   ChartSkeleton,
   IndicatorSkeleton,
@@ -127,7 +128,7 @@ const Dashboard = () => {
 
   // Desktop Layout
   return (
-    <div className="min-h-screen bg-background grid-pattern">
+    <div className="min-h-screen bg-background grid-pattern flex flex-col">
       {/* Connection Status */}
       <ConnectionStatus 
         isConnected={isConnected} 
@@ -147,7 +148,7 @@ const Dashboard = () => {
       />
 
       {/* Main Content */}
-      <div className="flex h-[calc(100vh-80px)]">
+      <div className="flex flex-1 h-[calc(100vh-200px)]">
         {/* Left Section - Charts */}
         <div className="flex-1 flex flex-col p-4 gap-4 overflow-hidden">
           {/* Main Chart */}
@@ -187,6 +188,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
