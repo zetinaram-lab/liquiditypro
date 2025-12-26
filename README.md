@@ -241,35 +241,33 @@ Las contribuciones son bienvenidas. Por favor:
 4. Push a la rama (`git push origin feature/AmazingFeature`)
 5. Abre un Pull Request
 
+## � Deployment
+
+### Vercel (Recomendado)
+```bash
+npm run build
+# Luego sube la carpeta dist/ a Vercel
+```
+
+### Netlify
+```bash
+npm run build
+# Build command: npm run build
+# Publish directory: dist
+```
+
+### GitHub Pages
+```bash
+npm run build
+# Deploy la carpeta dist/
+```
+
 ## 📧 Contacto
 
-**Proyecto creado con**: [Lovable](https://lovable.dev)
-
-**URL del Proyecto**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+**Autor**: Huguette Mont  
+**GitHub**: [@zetinaram-lab](https://github.com/zetinaram-lab)  
+**Repositorio**: [liquiditypro](https://github.com/zetinaram-lab/liquiditypro)
 
 ---
 
 ⭐ Si este proyecto te ayudó, considera darle una estrella en GitHub!
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)

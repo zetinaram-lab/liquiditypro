@@ -5,6 +5,43 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.0.0/),
 y este proyecto adhiere a [Versionado Semántico](https://semver.org/lang/es/).
 
+## [1.0.4] - 2025-12-26
+
+### 🚀 Migración Completa desde Lovable
+
+#### Removido ❌
+- Badge "edited with lovable" completamente eliminado
+- Plugin `lovable-tagger` desinstalado del proyecto
+- Referencias a Lovable en README.md
+- Secciones de deployment específicas de Lovable
+- URLs de proyecto Lovable
+
+#### Actualizado ✅
+- **package.json**:
+  - Nombre: `vite_react_shadcn_ts` → `liquiditypro`
+  - Versión: `0.0.0` → `1.0.4`
+  - Agregado: description, author, repository
+- **README.md**:
+  - Autoría: Huguette Mont
+  - Repository: zetinaram-lab/liquiditypro
+  - Deployment: Opciones para Vercel/Netlify/GitHub Pages
+  - Contacto actualizado sin referencias a Lovable
+
+#### Agregado 🎉
+- `MIGRATION_FROM_LOVABLE.md` - Documentación completa de migración
+- Ventajas de proyecto independiente vs Lovable
+- Opciones de deployment profesional
+- Lecciones aprendidas del proceso
+
+#### Resultado 🎯
+- ✅ Proyecto 100% independiente
+- ✅ Control total del código fuente
+- ✅ Sin branding de terceros
+- ✅ Listo para deployment en cualquier plataforma
+- ✅ Repositorio GitHub bajo control total
+
+---
+
 ## [1.0.3.1] - 2025-12-25
 
 ### 🔧 Corregido
