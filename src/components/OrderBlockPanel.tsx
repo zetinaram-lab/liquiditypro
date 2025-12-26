@@ -33,8 +33,8 @@ export const OrderBlockPanel = ({ orderBlocks, currentPrice, timeframe }: OrderB
   };
 
   return (
-    <div className="trading-card p-4">
-      <div className="flex items-center justify-between mb-4">
+    <div className="trading-card p-3">
+      <div className="flex items-center justify-between mb-3">
         <span className="indicator-label">{t.orderBlocks.title}</span>
         <div className="flex items-center gap-1.5">
           <Target className="w-3.5 h-3.5 text-accent" />
@@ -44,19 +44,19 @@ export const OrderBlockPanel = ({ orderBlocks, currentPrice, timeframe }: OrderB
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3">
         {/* Demand Zones */}
         <div>
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-2">
             <TrendingUp className="w-4 h-4 text-bullish" />
             <span className="text-xs font-medium text-bullish">{t.orderBlocks.demandZones}</span>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {bullishBlocks.length > 0 ? (
               bullishBlocks.map((block) => {
                 const distance = getDistanceFromPrice(block);
                 return (
-                  <div key={block.id} className="order-block-bullish p-2 rounded-r">
+                  <div key={block.id} className="order-block-bullish p-1.5 rounded-r">
                     <div className="flex justify-between items-start mb-1">
                       <span className="font-mono text-xs text-bullish">
                         ${block.priceLow.toFixed(2)} - ${block.priceHigh.toFixed(2)}
@@ -91,16 +91,16 @@ export const OrderBlockPanel = ({ orderBlocks, currentPrice, timeframe }: OrderB
 
         {/* Supply Zones */}
         <div>
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-2">
             <TrendingDown className="w-4 h-4 text-bearish" />
             <span className="text-xs font-medium text-bearish">{t.orderBlocks.supplyZones}</span>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {bearishBlocks.length > 0 ? (
               bearishBlocks.map((block) => {
                 const distance = getDistanceFromPrice(block);
                 return (
-                  <div key={block.id} className="order-block-bearish p-2 rounded-r">
+                  <div key={block.id} className="order-block-bearish p-1.5 rounded-r">
                     <div className="flex justify-between items-start mb-1">
                       <span className="font-mono text-xs text-bearish">
                         ${block.priceLow.toFixed(2)} - ${block.priceHigh.toFixed(2)}

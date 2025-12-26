@@ -43,8 +43,8 @@ export const RSIIndicator = memo(({ data }: RSIIndicatorProps) => {
   }
 
   return (
-    <div className="trading-card p-4">
-      <div className="flex items-center justify-between mb-3">
+    <div className="trading-card p-3">
+      <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-3">
           <span className="indicator-label">RSI (14)</span>
           <span className={`font-mono text-lg font-semibold ${rsiStatus.color}`}>

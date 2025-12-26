@@ -39,7 +39,7 @@ export const CandlestickChart = memo(({ candles, orderBlocks }: CandlestickChart
           horzLines: { color: 'hsl(217 33% 12%)' },
         },
         width: chartContainerRef.current.clientWidth,
-        height: 380,
+        height: 430,
         crosshair: {
           mode: 1,
           vertLine: {

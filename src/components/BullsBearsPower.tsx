@@ -28,7 +28,7 @@ export const BullsBearsPower = memo(({ data }: BullsBearsPowerProps) => {
   // Validación de datos vacíos
   if (!chartData.length) {
     return (
-      <div className="trading-card p-4">
+      <div className="trading-card p-3">
         <span className="indicator-label">{t.bullsBears.title}</span>
         <p className="text-sm text-muted-foreground mt-2">{t.bullsBears.noData}</p>
       </div>
@@ -76,8 +76,8 @@ export const BullsBearsPower = memo(({ data }: BullsBearsPowerProps) => {
   };
 
   return (
-    <div className="trading-card p-4">
-      <div className="flex items-center justify-between mb-3">
+    <div className="trading-card p-3">
+      <div className="flex items-center justify-between mb-2">
         <span className="indicator-label">{t.bullsBears.title}</span>
         <div className={`flex items-center gap-1.5 ${bullishDominance ? 'text-bullish' : 'text-bearish'}`}>
           {bullishDominance ? (

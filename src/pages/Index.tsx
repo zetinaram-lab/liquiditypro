@@ -151,11 +151,11 @@ const Dashboard = () => {
       />
 
       {/* Main Content */}
-      <div className="flex flex-1 h-[calc(100vh-200px)]">
+      <div className="flex flex-1">
         {/* Left Section - Charts */}
-        <div className="flex-1 flex flex-col p-4 gap-4 overflow-hidden">
-          {/* Main Chart */}
-          <div className="trading-card flex-1 min-h-0 p-4 relative">
+        <div className="flex-1 flex flex-col p-4 gap-3 overflow-auto">
+          {/* Main Chart - Optimized height */}
+          <div className="trading-card h-[480px] p-4 relative">
             <ChartHeader 
               timeframe={selectedTimeframe} 
               onTimeframeChange={changeTimeframe}
@@ -169,15 +169,15 @@ const Dashboard = () => {
             </div>
           </div>
 
-          {/* Order Block Panel */}
+          {/* Order Block Panel - Compact */}
           <OrderBlockPanel
             orderBlocks={data.orderBlocks}
             currentPrice={data.currentPrice}
             timeframe={selectedTimeframe}
           />
 
-          {/* Indicators Panel */}
-          <div className="grid grid-cols-2 gap-4">
+          {/* Indicators Panel - Compact grid */}
+          <div className="grid grid-cols-2 gap-3">
             <RSIIndicator data={data.rsiData} />
             <BullsBearsPower data={data.bullBearData} />
           </div>
