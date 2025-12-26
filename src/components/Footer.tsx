@@ -1,9 +1,9 @@
 // ============================================
 // Footer Component - Minimal & Professional
-// v1.0.8 - Updated with contributors
+// v1.3.1 - Updated with LinkedIn and AI attribution
 // ============================================
 
-import { Github, Linkedin, Mail, Code2, Construction } from 'lucide-react';
+import { Github, Linkedin, Mail, Code2, Construction, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export const Footer = () => {
@@ -18,6 +18,8 @@ export const Footer = () => {
       project: 'Demo Project - Not for Real Trading',
       contribute: 'View on GitHub',
       madeWith: 'Made with',
+      withAI: 'with Claude Sonnet 4.5',
+      forTraders: 'for traders',
     },
     es: {
       builtBy: 'Desarrollado por',
@@ -26,6 +28,8 @@ export const Footer = () => {
       project: 'Proyecto Demo - No para Trading Real',
       contribute: 'Ver en GitHub',
       madeWith: 'Hecho con',
+      withAI: 'con Claude Sonnet 4.5',
+      forTraders: 'para traders',
     },
   };
 
@@ -44,7 +48,14 @@ export const Footer = () => {
               <div className="flex flex-col">
                 <span className="text-xs text-muted-foreground">{t.builtBy}</span>
                 <div className="flex items-center gap-1.5 font-medium text-foreground">
-                  <span className="hover:text-primary transition-colors cursor-default">Ramses Zetina</span>
+                  <a 
+                    href="https://www.linkedin.com/in/ramseszetina" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="hover:text-primary transition-colors cursor-pointer hover:underline"
+                  >
+                    Ramses Zetina
+                  </a>
                   <span className="text-muted-foreground/60 text-xs">&</span>
                   <span className="hover:text-primary transition-colors cursor-default">Oliver Urik</span>
                 </div>
@@ -60,7 +71,7 @@ export const Footer = () => {
 
             <div className="hidden md:flex items-center gap-1 text-xs text-muted-foreground">
               <Code2 className="w-3 h-3" />
-              <span>{t.version} 1.0.8</span>
+              <span>{t.version} 1.3.1</span>
             </div>
           </div>
 
@@ -77,11 +88,12 @@ export const Footer = () => {
             </a>
 
             <a
-              href="https://linkedin.com/in/huguette-mont"
+              href="https://www.linkedin.com/in/ramseszetina"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-foreground transition-colors"
-              aria-label="LinkedIn"
+              className="text-muted-foreground hover:text-blue-500 transition-colors"
+              aria-label="LinkedIn - Ramses Zetina"
+              title="Connect on LinkedIn"
             >
               <Linkedin className="w-4 h-4" />
             </a>
@@ -99,9 +111,16 @@ export const Footer = () => {
         {/* Bottom: Copyright & Disclaimer */}
         <div className="mt-4 pt-4 border-t border-border/30 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
           <p>© {currentYear} LiquidityPro. {t.project}.</p>
-          <p className="flex items-center gap-1">
-            {t.madeWith} <span className="text-red-500">♥</span> {t.forTraders}
-          </p>
+          <div className="flex items-center gap-3">
+            <p className="flex items-center gap-1">
+              {t.madeWith} <span className="text-red-500">♥</span> {t.forTraders}
+            </p>
+            <span className="text-muted-foreground/40">•</span>
+            <p className="flex items-center gap-1.5">
+              <Sparkles className="w-3 h-3 text-purple-400" />
+              <span className="text-muted-foreground/80">{t.withAI}</span>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
